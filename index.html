@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>String Formatter</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #007bff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 2em;
+            font-weight: 300;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: 600;
+            font-size: 1em;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #4facfe;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
+        }
+
+        .generate-btn {
+            width: 100%;
+            padding: 12px;
+            background: #0056b3;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 123, 255, 0.3);
+        }
+
+        .output-section {
+            margin-top: 20px;
+        }
+
+        .output-label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 600;
+            font-size: 1em;
+        }
+
+        .output-box {
+            width: 100%;
+            min-height: 60px;
+            padding: 12px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            background: #f8f9fa;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.4;
+            word-wrap: break-word;
+            resize: vertical;
+        }
+
+        .copy-btn {
+            width: 100%;
+            padding: 10px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 12px;
+        }
+
+        .copy-btn:hover {
+            background: #218838;
+            transform: translateY(-1px);
+        }
+
+        .copy-btn:active {
+            transform: translateY(0);
+        }
+
+        .success-message {
+            text-align: center;
+            color: #28a745;
+            font-weight: 600;
+            margin-top: 10px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .success-message.show {
+            opacity: 1;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>String Formatter</h1>
+        
+        <div class="input-group">
+            <label for="voucherCode">Voucher Code:</label>
+            <input type="text" id="voucherCode" placeholder="Enter voucher code">
+        </div>
+        
+        <div class="input-group">
+            <label for="password">Password:</label>
+            <input type="text" id="password" placeholder="Enter password">
+        </div>
+        
+        <div class="input-group">
+            <label for="ipAddress">IP Address:</label>
+            <input type="text" id="ipAddress" placeholder="Enter IP address">
+        </div>
+        
+        <div class="input-group">
+            <label for="macAddress">MAC Address:</label>
+            <input type="text" id="macAddress" placeholder="Enter MAC address">
+        </div>
+        
+        <button class="generate-btn" onclick="generateOutput()">Generate Output</button>
+        
+        <div class="output-section">
+            <label class="output-label">Formatted Output:</label>
+            <textarea class="output-box" id="output" readonly placeholder="Generated output will appear here..."></textarea>
+            <button class="copy-btn" onclick="copyToClipboard()">Copy to Clipboard</button>
+            <div class="success-message" id="successMessage">Copied to clipboard!</div>
+        </div>
+    </div>
+
+    <script>
+        function generateOutput() {
+            const voucherCode = document.getElementById('voucherCode').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const ipAddress = document.getElementById('ipAddress').value.trim();
+            const macAddress = document.getElementById('macAddress').value.trim();
+            
+            // Validate that all fields are filled
+            if (!voucherCode || !password || !ipAddress || !macAddress) {
+                alert('Please fill in all fields before generating output.');
+                return;
+            }
+            
+            // Generate the formatted output
+            const output = `/ip hotspot active login user=${voucherCode} password=${password} mac-address=${macAddress.toLowerCase()} ip=${ipAddress}`;
+            
+            document.getElementById('output').value = output;
+        }
+        
+        function copyToClipboard() {
+            const outputText = document.getElementById('output').value;
+            
+            if (!outputText) {
+                alert('No output to copy. Please generate output first.');
+                return;
+            }
+            
+            // Use the modern clipboard API
+            navigator.clipboard.writeText(outputText).then(function() {
+                showSuccessMessage();
+            }).catch(function(err) {
+                // Fallback for older browsers
+                fallbackCopyToClipboard(outputText);
+            });
+        }
+        
+        function fallbackCopyToClipboard(text) {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            textArea.style.position = 'fixed';
+            textArea.style.left = '-999999px';
+            textArea.style.top = '-999999px';
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            
+            try {
+                document.execCommand('copy');
+                showSuccessMessage();
+            } catch (err) {
+                alert('Failed to copy text. Please select and copy manually.');
+            }
+            
+            document.body.removeChild(textArea);
+        }
+        
+        function showSuccessMessage() {
+            const message = document.getElementById('successMessage');
+            message.classList.add('show');
+            
+            setTimeout(() => {
+                message.classList.remove('show');
+            }, 2000);
+        }
+        
+        // Allow Enter key to generate output
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                generateOutput();
+            }
+        });
+        
+        // Auto-generate when all fields are filled
+        document.addEventListener('input', function() {
+            const voucherCode = document.getElementById('voucherCode').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const ipAddress = document.getElementById('ipAddress').value.trim();
+            const macAddress = document.getElementById('macAddress').value.trim();
+            
+            if (voucherCode && password && ipAddress && macAddress) {
+                generateOutput();
+            }
+        });
+    </script>
+</body>
+</html>
